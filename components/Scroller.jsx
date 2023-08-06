@@ -4,6 +4,9 @@ import { useEffect, useRef } from "react";
 
 const Scroller = ({ data }) => {
   const scrollerRef = useRef(null);
+  const customScrollbarRef = useRef(null);
+  const customScrollbarThumbRef = useRef(null);
+
 
   useEffect(() => {
     const scroller = scrollerRef.current;
@@ -20,6 +23,18 @@ const Scroller = ({ data }) => {
       if (scroller.scrollLeft < scroller.scrollWidth - scroller.offsetWidth) {
         container.classList.add("show-right-gradient");
       }
+
+      // Calculate the viewport to content ratio
+      const viewportToContentRatio = scroller.offsetWidth / scroller.scrollWidth;
+
+      // Update the thumb's width
+      customScrollbarThumbRef.current.style.width = `${viewportToContentRatio * 100}%`;
+
+      // Calculate the scroll ratio for adjusting thumb's position
+      const scrollRatio = scroller.scrollLeft / (scroller.scrollWidth - scroller.offsetWidth);
+
+      // Update the thumb's left value based on scroll position
+      customScrollbarThumbRef.current.style.left = `${scrollRatio * (customScrollbarRef.current.offsetWidth - customScrollbarThumbRef.current.offsetWidth)}px`;
     };
 
     scroller.addEventListener("scroll", handleScroll);
@@ -30,8 +45,53 @@ const Scroller = ({ data }) => {
     };
   }, []);
 
+  useEffect(() => {
+    let isDragging = false;
+    let lastClientX; // to store the last x position
+
+    const handleDragStart = (e) => {
+      isDragging = true;
+      lastClientX = e.clientX;
+      customScrollbarThumbRef.current.style.transition = 'none'; // remove transition during drag
+      document.addEventListener('mousemove', handleDragMove);
+      document.addEventListener('mouseup', handleDragEnd);
+    };
+
+    const handleDragMove = (e) => {
+      if (!isDragging) return;
+      const dx = e.clientX - lastClientX;
+      const scrollRatio = customScrollbarRef.current.offsetWidth / customScrollbarThumbRef.current.offsetWidth;
+      scrollerRef.current.scrollLeft += dx * scrollRatio;
+      lastClientX = e.clientX;
+    };
+
+    const handleDragEnd = () => {
+      isDragging = false;
+      customScrollbarThumbRef.current.style.transition = ''; // add back the transition
+      document.removeEventListener('mousemove', handleDragMove);
+      document.removeEventListener('mouseup', handleDragEnd);
+    };
+
+    // Add event listeners to both customScrollbar and customScrollbarThumb
+    customScrollbarRef.current.addEventListener('mousedown', handleDragStart);
+    customScrollbarThumbRef.current.addEventListener('mousedown', handleDragStart);
+
+    return () => {
+      customScrollbarRef.current.removeEventListener('mousedown', handleDragStart);
+      customScrollbarThumbRef.current.removeEventListener('mousedown', handleDragStart);
+      document.removeEventListener('mousemove', handleDragMove);
+      document.removeEventListener('mouseup', handleDragEnd);
+    };
+  }, []);
+
+
+
   return (
     <ScrollerContainer>
+      <CustomScrollbar ref={customScrollbarRef}>
+        <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
+      </CustomScrollbar>
+
       <ScrollerWrapper ref={scrollerRef}>
         {data?.results?.map((movie) => (
           <div className={"flex flex-col flex-wrap"} key={movie.id}>
@@ -102,17 +162,7 @@ const ScrollerWrapper = styled.div`
   margin-top: 40px;
 
   &::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-  }
-
-  &::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    display: none;  // Hide default scrollbar
   }
 
   h1 {
@@ -143,5 +193,48 @@ const Card = styled.div`
     cursor: pointer;
   }
 `;
+
+const CustomScrollbar = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);  // This ensures it's centered
+  height: 5px;
+  width: 20%;  // You can adjust this width as needed
+  background: #DFDFDF;
+  z-index: 2;
+  overflow: hidden;
+  cursor: pointer;
+  border-radius: 10px;
+
+  html.dark & {
+    background: #4F4F4F;
+  }
+`;
+
+
+const CustomScrollbarThumb = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 20px; // Initial width, will adjust with JS
+  height: 5px;
+  background: #121212;
+  border-radius: 10px;
+  cursor: grab;
+
+  &:active {
+    cursor: grabbing;
+  }
+
+  user-select: none;
+  
+  html.dark & {
+    background: #FFFFFF;
+  }
+`;
+
+
 
 export default Scroller;

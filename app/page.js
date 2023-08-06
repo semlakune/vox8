@@ -37,7 +37,7 @@ function Home() {
   return (
     <div>
       <Navbar />
-      <div className={"container mt-5 px-6 max-w-7xl"}>
+      <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
         <Hero />
         {/* SECTION NOW PLAYING */}
         <NowPlayingSection data={dataHome} />
