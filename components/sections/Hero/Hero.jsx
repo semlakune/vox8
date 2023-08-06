@@ -73,6 +73,7 @@ const SliderWrapper = styled.div`
     width: 10px;
     border-radius: 100%;
     padding: 0;
+    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Elastic effect for scale, smooth for opacity */
   }
 
   .dots_custom li.slick-active button {
@@ -80,6 +81,13 @@ const SliderWrapper = styled.div`
     width: 20px;
     height: 10px;
     border-radius: 20px;
+    transform: scale(1.5); /* Scale the dot up */
+    opacity: 1; /* Make the dot fully visible */
+  }
+
+  .dots_custom li:not(.slick-active) button {
+    transform: scale(1); /* Keep the dot at its normal scale */
+    opacity: 0.7; /* Make the dot slightly transparent */
   }
 `;
 
@@ -88,11 +96,11 @@ const Hero = () => {
   const [dataHero, setDataHero] = useState([]);
   const settings = {
     dots: true,
-    // infinite: true,
+    infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    // autoplay: true,
+    autoplay: true,
     autoplaySpeed: 3000,
     cssEase: "linear",
     arrows: false,
@@ -120,7 +128,6 @@ const Hero = () => {
       .then((data) => setDataHero(data?.results?.slice(0, 5)));
   }, []);
 
-  console.log(dataHero);
 
   return (
     <SliderWrapper theme={theme}>
