@@ -7,7 +7,6 @@ const Scroller = ({ data }) => {
   const customScrollbarRef = useRef(null);
   const customScrollbarThumbRef = useRef(null);
 
-
   useEffect(() => {
     const scroller = scrollerRef.current;
     const container = scroller.parentNode;
@@ -83,8 +82,6 @@ const Scroller = ({ data }) => {
       document.removeEventListener('mouseup', handleDragEnd);
     };
   }, []);
-
-
 
   return (
     <ScrollerContainer>

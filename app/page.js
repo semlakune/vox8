@@ -7,8 +7,10 @@ import PopularSection from "@/components/sections/Popular/Popular";
 
 function Home() {
   const [dataHome, setDataHome] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const fetchHomeData = async () => {
+    setLoading(true);
     const nowPlaying = await fetch(
       process.env.NEXT_PUBLIC_VOX8_API + "movies/now_playing",
     );
@@ -29,7 +31,10 @@ function Home() {
   };
 
   useEffect(() => {
-    fetchHomeData().then((data) => setDataHome(data));
+    fetchHomeData()
+        .then((data) => setDataHome(data))
+        .catch((err) => console.log(err))
+        .finally(() => setLoading(false));
   }, []);
 
   console.log(dataHome);
@@ -38,11 +43,11 @@ function Home() {
     <div>
       <Navbar />
       <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
-        <Hero />
+        <Hero loading={loading} dataHero={dataHome} />
         {/* SECTION NOW PLAYING */}
-        <NowPlayingSection data={dataHome} />
+        <NowPlayingSection data={dataHome} loading={loading} />
         {/* SECTION POPULAR */}
-        <PopularSection data={dataHome} />
+        <PopularSection data={dataHome} loading={loading} />
         {/* SECTION TOP RATED */}
         {/* SECTION UPCOMING */}
       </div>

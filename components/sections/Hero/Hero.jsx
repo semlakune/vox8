@@ -4,17 +4,60 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import { useEffect, useState } from "react";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import styled from "styled-components";
 import {useTheme} from "next-themes";
+
+const Hero = ({ loading, dataHero }) => {
+  const { theme } = useTheme();
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 3000,
+    cssEase: "linear",
+    arrows: false,
+    appendDots: (dots) => (
+      <div
+        style={{
+          width: "100%",
+          position: "absolute",
+          // bottom: '24px',
+          top: "105%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <ul> {dots} </ul>
+      </div>
+    ),
+    dotsClass: "dots_custom",
+  };
+
+  if (loading) return <div>Loading...</div>;
+  return (
+    <SliderWrapper theme={theme}>
+      <Slider {...settings}>
+        {dataHero?.popularData?.results.map((movie, index) => (
+          <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
+            <Card className={"hero-card"}>
+              <CardContent>
+                <h1>{movie.title}</h1>
+              </CardContent>
+            </Card>
+          </Wrapper>
+        ))}
+      </Slider>
+    </SliderWrapper>
+  );
+};
 
 const Wrapper = styled.div`
   .hero-card {
@@ -97,60 +140,5 @@ const SliderWrapper = styled.div`
     opacity: 0.7; /* Make the dot slightly transparent */
   }
 `;
-
-const Hero = () => {
-  const { theme } = useTheme();
-  const [dataHero, setDataHero] = useState([]);
-  const settings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3000,
-    cssEase: "linear",
-    arrows: false,
-    appendDots: (dots) => (
-      <div
-        style={{
-          width: "100%",
-          position: "absolute",
-          // bottom: '24px',
-          top: "105%",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <ul> {dots} </ul>
-      </div>
-    ),
-    dotsClass: "dots_custom",
-  };
-
-  useEffect(() => {
-    fetch(process.env.NEXT_PUBLIC_VOX8_API + "movies/popular")
-      .then((res) => res.json())
-      .then((data) => setDataHero(data?.results?.slice(0, 5)));
-  }, []);
-
-
-  return (
-    <SliderWrapper theme={theme}>
-      <Slider {...settings}>
-        {dataHero?.map((movie, index) => (
-          <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
-            <Card className={"hero-card"}>
-              <CardContent>
-                <h1>{movie.title}</h1>
-              </CardContent>
-            </Card>
-          </Wrapper>
-        ))}
-      </Slider>
-    </SliderWrapper>
-  );
-};
 
 export default Hero;
