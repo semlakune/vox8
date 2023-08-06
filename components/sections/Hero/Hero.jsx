@@ -19,7 +19,7 @@ import {useTheme} from "next-themes";
 const Wrapper = styled.div`
   .hero-card {
     width: 100%;
-    height: 40vh;
+    height: 30vh;
     background-image: url(${({ $backdrop }) => ($backdrop ? $backdrop : null)});
     filter: brightness(0.8);
     background-size: cover;
@@ -65,24 +65,31 @@ const SliderWrapper = styled.div`
 
   .dots_custom li button {
     border: none;
-    background: ${({ theme }) => theme === "dark" ? "#696969" : "#d1d1d1"};
+    background: #d1d1d1;
     color: transparent;
     cursor: pointer;
     display: block;
-    height: 10px;
-    width: 10px;
+    height: 5px;
+    width: 5px;
     border-radius: 100%;
     padding: 0;
     transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Elastic effect for scale, smooth for opacity */
+    html.dark & {
+      background: #696969;
+    }
   }
 
   .dots_custom li.slick-active button {
-    background-color: ${({ theme }) => theme === "dark" ? "#fff" : "#000"};
-    width: 20px;
-    height: 10px;
+    background-color: #000;
+    width: 10px;
+    height: 5px;
     border-radius: 20px;
     transform: scale(1.5); /* Scale the dot up */
     opacity: 1; /* Make the dot fully visible */
+    
+    html.dark & {
+      background: #fff;
+    }
   }
 
   .dots_custom li:not(.slick-active) button {
@@ -133,7 +140,7 @@ const Hero = () => {
     <SliderWrapper theme={theme}>
       <Slider {...settings}>
         {dataHero?.map((movie, index) => (
-          <Wrapper key={index} className={"px-2"} $backdrop={movie.backdrop}>
+          <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
             <Card className={"hero-card"}>
               <CardContent>
                 <h1>{movie.title}</h1>
