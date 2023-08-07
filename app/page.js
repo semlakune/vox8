@@ -12,16 +12,16 @@ function Home() {
   const fetchHomeData = async () => {
     setLoading(true);
     const nowPlaying = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "movies/now_playing",
+      process.env.NEXT_PUBLIC_VOX8_API + "/movies/now_playing",
     );
     const popular = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "movies/popular",
+      process.env.NEXT_PUBLIC_VOX8_API + "/movies/popular",
     );
     const topRated = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "movies/top_rated",
+      process.env.NEXT_PUBLIC_VOX8_API + "/movies/top_rated",
     );
     const upcoming = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "movies/upcoming",
+      process.env.NEXT_PUBLIC_VOX8_API + "/movies/upcoming",
     );
     const nowPlayingData = await nowPlaying.json();
     const popularData = await popular.json();

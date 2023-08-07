@@ -1,87 +1,106 @@
 'use client';
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
+import {Skeleton} from "@/components/ui/skeleton";
 
-const Scroller = ({ data }) => {
+const Scroller = ({ data, loading }) => {
   const scrollerRef = useRef(null);
   const customScrollbarRef = useRef(null);
   const customScrollbarThumbRef = useRef(null);
 
   useEffect(() => {
-    const scroller = scrollerRef.current;
-    const container = scroller.parentNode;
+    if (!loading) {
+      const scroller = scrollerRef.current;
+      const container = scroller?.parentNode;
 
-    const handleScroll = () => {
-      // Remove any existing classes to reset the gradients
-      container.classList.remove("show-left-gradient", "show-right-gradient");
+      const handleScroll = () => {
+        if (container) {
+          // Remove any existing classes to reset the gradients
+          container.classList.remove("show-left-gradient", "show-right-gradient");
 
-      if (scroller.scrollLeft > 0) {
-        container.classList.add("show-left-gradient");
-      }
+          if (scroller.scrollLeft > 0) {
+            container.classList.add("show-left-gradient");
+          }
 
-      if (scroller.scrollLeft < scroller.scrollWidth - scroller.offsetWidth) {
-        container.classList.add("show-right-gradient");
-      }
+          if (scroller.scrollLeft < scroller.scrollWidth - scroller.offsetWidth) {
+            container.classList.add("show-right-gradient");
+          }
 
-      // Calculate the viewport to content ratio
-      const viewportToContentRatio = scroller.offsetWidth / scroller.scrollWidth;
+          // Calculate the viewport to content ratio
+          const viewportToContentRatio = scroller.offsetWidth / scroller.scrollWidth;
 
-      // Update the thumb's width
-      customScrollbarThumbRef.current.style.width = `${viewportToContentRatio * 100}%`;
+          // Update the thumb's width
+          customScrollbarThumbRef.current.style.width = `${viewportToContentRatio * 100}%`;
 
-      // Calculate the scroll ratio for adjusting thumb's position
-      const scrollRatio = scroller.scrollLeft / (scroller.scrollWidth - scroller.offsetWidth);
+          // Calculate the scroll ratio for adjusting thumb's position
+          const scrollRatio = scroller.scrollLeft / (scroller.scrollWidth - scroller.offsetWidth);
 
-      // Update the thumb's left value based on scroll position
-      customScrollbarThumbRef.current.style.left = `${scrollRatio * (customScrollbarRef.current.offsetWidth - customScrollbarThumbRef.current.offsetWidth)}px`;
-    };
+          // Update the thumb's left value based on scroll position
+          customScrollbarThumbRef.current.style.left = `${scrollRatio * (customScrollbarRef.current.offsetWidth - customScrollbarThumbRef.current.offsetWidth)}px`;
+        }
+      };
 
-    scroller.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial position
+      scroller.addEventListener("scroll", handleScroll);
+      handleScroll(); // Check initial position
 
-    return () => {
-      scroller.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+      return () => {
+        scroller.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [loading]);
 
   useEffect(() => {
-    let isDragging = false;
-    let lastClientX; // to store the last x position
+    if (!loading) {
+      let isDragging = false;
+      let lastClientX; // to store the last x position
 
-    const handleDragStart = (e) => {
-      isDragging = true;
-      lastClientX = e.clientX;
-      customScrollbarThumbRef.current.style.transition = 'none'; // remove transition during drag
-      document.addEventListener('mousemove', handleDragMove);
-      document.addEventListener('mouseup', handleDragEnd);
-    };
+      const handleDragStart = (e) => {
+        isDragging = true;
+        lastClientX = e.clientX;
+        customScrollbarThumbRef.current.style.transition = 'none'; // remove transition during drag
+        document.addEventListener('mousemove', handleDragMove);
+        document.addEventListener('mouseup', handleDragEnd);
+      };
 
-    const handleDragMove = (e) => {
-      if (!isDragging) return;
-      const dx = e.clientX - lastClientX;
-      const scrollRatio = customScrollbarRef.current.offsetWidth / customScrollbarThumbRef.current.offsetWidth;
-      scrollerRef.current.scrollLeft += dx * scrollRatio;
-      lastClientX = e.clientX;
-    };
+      const handleDragMove = (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - lastClientX;
+        const scrollRatio = customScrollbarRef.current.offsetWidth / customScrollbarThumbRef.current.offsetWidth;
+        scrollerRef.current.scrollLeft += dx * scrollRatio;
+        lastClientX = e.clientX;
+      };
 
-    const handleDragEnd = () => {
-      isDragging = false;
-      customScrollbarThumbRef.current.style.transition = ''; // add back the transition
-      document.removeEventListener('mousemove', handleDragMove);
-      document.removeEventListener('mouseup', handleDragEnd);
-    };
+      const handleDragEnd = () => {
+        isDragging = false;
+        customScrollbarThumbRef.current.style.transition = ''; // add back the transition
+        document.removeEventListener('mousemove', handleDragMove);
+        document.removeEventListener('mouseup', handleDragEnd);
+      };
 
-    // Add event listeners to both customScrollbar and customScrollbarThumb
-    customScrollbarRef.current.addEventListener('mousedown', handleDragStart);
-    customScrollbarThumbRef.current.addEventListener('mousedown', handleDragStart);
+      // Add event listeners to both customScrollbar and customScrollbarThumb
+      customScrollbarRef.current.addEventListener('mousedown', handleDragStart);
+      customScrollbarThumbRef.current.addEventListener('mousedown', handleDragStart);
 
-    return () => {
-      customScrollbarRef.current.removeEventListener('mousedown', handleDragStart);
-      customScrollbarThumbRef.current.removeEventListener('mousedown', handleDragStart);
-      document.removeEventListener('mousemove', handleDragMove);
-      document.removeEventListener('mouseup', handleDragEnd);
-    };
-  }, []);
+      return () => {
+        customScrollbarRef.current.removeEventListener('mousedown', handleDragStart);
+        customScrollbarThumbRef.current.removeEventListener('mousedown', handleDragStart);
+        document.removeEventListener('mousemove', handleDragMove);
+        document.removeEventListener('mouseup', handleDragEnd);
+      };
+    }
+  }, [loading]);
+
+  if (loading) return (
+      <ScrollerWrapper>
+        {[0,1,2,3,4,5].map((item, index) => (
+            <div className={"flex flex-col flex-wrap gap-3"} key={index}>
+              <Skeleton className={"w-[200px] h-[300px] m-[3px] rounded-[10px]"} />
+              <Skeleton className={"w-[150px] h-[10px] m-[3px]"} />
+              <Skeleton className={"w-[100px] h-[10px] m-[3px]"} />
+            </div>
+        ))}
+      </ScrollerWrapper>
+  )
 
   return (
     <ScrollerContainer>
@@ -150,13 +169,12 @@ const ScrollerContainer = styled.div`
     visibility: visible;
   }
 `;
-
 const ScrollerWrapper = styled.div`
   display: flex;
   overflow-x: auto;
   white-space: nowrap;
   width: 100%;
-  margin-top: 40px;
+  margin-top: 5px;
 
   &::-webkit-scrollbar {
     display: none;  // Hide default scrollbar
@@ -168,8 +186,6 @@ const ScrollerWrapper = styled.div`
     margin-bottom: 20px;
   }
 `;
-
-// Card Component
 const Card = styled.div`
   flex: 0 0 auto;
   width: 200px;
@@ -190,7 +206,6 @@ const Card = styled.div`
     cursor: pointer;
   }
 `;
-
 const CustomScrollbar = styled.div`
   position: absolute;
   bottom: 0;
@@ -208,8 +223,6 @@ const CustomScrollbar = styled.div`
     background: #4F4F4F;
   }
 `;
-
-
 const CustomScrollbarThumb = styled.div`
   position: absolute;
   left: 0;
@@ -231,7 +244,5 @@ const CustomScrollbarThumb = styled.div`
     background: #FFFFFF;
   }
 `;
-
-
 
 export default Scroller;

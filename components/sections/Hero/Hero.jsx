@@ -8,11 +8,10 @@ import {
   Card,
   CardContent,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton"
 import styled from "styled-components";
-import {useTheme} from "next-themes";
 
 const Hero = ({ loading, dataHero }) => {
-  const { theme } = useTheme();
   const settings = {
     dots: true,
     infinite: true,
@@ -41,9 +40,13 @@ const Hero = ({ loading, dataHero }) => {
     dotsClass: "dots_custom",
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return (
+      <div className={"flex justify-center items-center"}>
+        <Skeleton className="w-[100%] h-[30vh] px-3" />
+      </div>
+  )
   return (
-    <SliderWrapper theme={theme}>
+    <SliderWrapper>
       <Slider {...settings}>
         {dataHero?.popularData?.results.map((movie, index) => (
           <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
@@ -53,7 +56,7 @@ const Hero = ({ loading, dataHero }) => {
               </CardContent>
             </Card>
           </Wrapper>
-        ))}
+        )).slice(0, 10)}
       </Slider>
     </SliderWrapper>
   );
@@ -94,7 +97,7 @@ const SliderWrapper = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: auto 0;
+    margin: 8px 0;
     padding: 0;
   }
 
