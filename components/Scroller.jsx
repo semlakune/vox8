@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 
-const Scroller = ({ data, loading }) => {
+const Scroller = ({ data, loading, title }) => {
   const scrollerRef = useRef(null);
   const customScrollbarRef = useRef(null);
   const customScrollbarThumbRef = useRef(null);
@@ -103,24 +103,30 @@ const Scroller = ({ data, loading }) => {
   )
 
   return (
-    <ScrollerContainer>
-      <CustomScrollbar ref={customScrollbarRef}>
-        <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
-      </CustomScrollbar>
+      <>
+        <div className={"flex items-center gap-2 mt-10 mb-2 px-3 font-bold text-2xl cursor-pointer w-max"}>
+          <h1>{title}</h1>
+          <div>-&gt;</div>
+        </div>
+        <ScrollerContainer>
+          <CustomScrollbar ref={customScrollbarRef}>
+            <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
+          </CustomScrollbar>
 
-      <ScrollerWrapper ref={scrollerRef}>
-        {data?.results?.map((movie) => (
-          <div className={"flex flex-col flex-wrap"} key={movie.id}>
-            <Card poster={movie.poster} />
-            <div className={"max-w-[200px] whitespace-pre-wrap px-3"}>
-              <h1>
-                {movie.title} ({new Date(movie.release_date).getFullYear()})
-              </h1>
-            </div>
-          </div>
-        ))}
-      </ScrollerWrapper>
-    </ScrollerContainer>
+          <ScrollerWrapper ref={scrollerRef}>
+            {data?.results?.map((movie) => (
+                <div className={"flex flex-col flex-wrap"} key={movie.id}>
+                  <Card poster={movie.poster} />
+                  <div className={"max-w-[200px] whitespace-pre-wrap px-3"}>
+                    <h1>
+                      {movie.title} ({new Date(movie.release_date).getFullYear()})
+                    </h1>
+                  </div>
+                </div>
+            ))}
+          </ScrollerWrapper>
+        </ScrollerContainer>
+      </>
   );
 };
 
