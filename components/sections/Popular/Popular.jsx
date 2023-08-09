@@ -1,10 +1,13 @@
 import Scroller from "@/components/Scroller";
+import usePopular from "@/api/usePopular";
+import {useState} from "react";
 
-const PopularSection = ({ data, loading }) => {
-
+const PopularSection = () => {
+  const [group, setGroup] = useState("movie");
+  const { dataPopular, isLoadingPopular, isErrorPopular } = usePopular(group);
   return (
       <div>
-        <Scroller data={data?.popularData} loading={loading} title={"Popular"} />
+        <Scroller data={dataPopular} loading={isLoadingPopular} error={isErrorPopular} title={"Popular"} group={group} setGroup={setGroup} />
       </div>
   )
 }

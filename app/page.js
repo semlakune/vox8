@@ -1,55 +1,23 @@
 "use client";
 import { Navbar } from "@/components/sections/Navbar/Navbar";
 import Hero from "@/components/sections/Hero/Hero";
-import { useEffect, useState } from "react";
-import NowPlayingSection from "@/components/sections/NowPlaying/NowPlaying";
+import { useState } from "react";
 import PopularSection from "@/components/sections/Popular/Popular";
+import useTrending from "@/api/useTrending";
 
 function Home() {
-  const [dataHome, setDataHome] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [time, setTime] = useState("day");
 
-  const fetchHomeData = async () => {
-    setLoading(true);
-    const nowPlaying = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "/movies/now_playing",
-    );
-    const popular = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "/movies/popular",
-    );
-    const topRated = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "/movies/top_rated",
-    );
-    const upcoming = await fetch(
-      process.env.NEXT_PUBLIC_VOX8_API + "/movies/upcoming",
-    );
-    const nowPlayingData = await nowPlaying.json();
-    const popularData = await popular.json();
-    const topRatedData = await topRated.json();
-    const upcomingData = await upcoming.json();
-    return { nowPlayingData, popularData, topRatedData, upcomingData };
-  };
-
-  useEffect(() => {
-    fetchHomeData()
-        .then((data) => setDataHome(data))
-        .catch((err) => console.log(err))
-        .finally(() => setLoading(false));
-  }, []);
-
-  console.log(dataHome);
+  const {dataTrending, isLoadingTrending, isErrorTrending} = useTrending(time);
 
   return (
     <div>
       <Navbar />
       <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
-        <Hero loading={loading} dataHero={dataHome} />
-        {/* SECTION NOW PLAYING */}
-        <NowPlayingSection data={dataHome} loading={loading} />
+        <Hero loading={isLoadingTrending} error={isErrorTrending} data={dataTrending} />
         {/* SECTION POPULAR */}
-        <PopularSection data={dataHome} loading={loading} />
+        <PopularSection />
         {/* SECTION TOP RATED */}
-        {/* SECTION UPCOMING */}
       </div>
     </div>
   );

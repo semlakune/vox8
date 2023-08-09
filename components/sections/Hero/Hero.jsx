@@ -12,7 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import styled from "styled-components";
 import Image from "next/image";
 
-const Hero = ({ loading, dataHero }) => {
+const Hero = ({ loading, data }) => {
   const settings = {
     dots: true,
     infinite: true,
@@ -42,19 +42,19 @@ const Hero = ({ loading, dataHero }) => {
   };
 
   if (loading) return (
-      <div className={"flex justify-center items-center"}>
-        <Skeleton className="w-[100%] h-[30vh] px-3" />
+      <div className={"flex justify-center items-center px-3"}>
+        <Skeleton className="w-[100%] h-[40vh]" />
       </div>
   )
   return (
     <SliderWrapper>
       <Slider {...settings}>
-        {dataHero?.popularData?.results.map((movie, index) => (
+        {data?.results.map((movie, index) => (
           <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
             <Card className={"hero-card"}>
-              <Image src={movie.backdrop} alt={movie.title || "Movie Poster"} width={500} height={500} priority />
+              <Image src={movie.backdrop} alt={movie.title || "Movie Poster"} width={1400} height={800} priority />
               <CardContent>
-                <h1>{movie.title + ` (${new Date(movie.release_date).getFullYear()})`}</h1>
+                <h1>{movie.title + (movie.release_date ? ` (${new Date(movie.release_date).getFullYear()})` : '')}</h1>
               </CardContent>
             </Card>
           </Wrapper>
@@ -72,7 +72,7 @@ const Wrapper = styled.div`
     
     img {
       object-fit: cover;
-      filter: brightness(0.5);
+      //filter: brightness(0.5);
       width: 100%;
       height: 100%;
     }

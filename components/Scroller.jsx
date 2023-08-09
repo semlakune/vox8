@@ -3,8 +3,9 @@ import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import Image from "next/image";
+import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 
-const Scroller = ({ data, loading, title }) => {
+const Scroller = ({ data, loading, error, group, setGroup, title }) => {
   const scrollerRef = useRef(null);
   const customScrollbarRef = useRef(null);
   const customScrollbarThumbRef = useRef(null);
@@ -51,7 +52,8 @@ const Scroller = ({ data, loading, title }) => {
   }, [loading]);
 
   useEffect(() => {
-    if (!loading) {
+    let isMounted = true;
+    if (!loading && isMounted) {
       let isDragging = false;
       let lastClientX; // to store the last x position
 
@@ -83,8 +85,15 @@ const Scroller = ({ data, loading, title }) => {
       customScrollbarThumbRef.current.addEventListener('mousedown', handleDragStart);
 
       return () => {
-        customScrollbarRef.current.removeEventListener('mousedown', handleDragStart);
-        customScrollbarThumbRef.current.removeEventListener('mousedown', handleDragStart);
+        isMounted = false;
+        if (customScrollbarRef.current && isMounted) {
+          customScrollbarRef.current.removeEventListener('mousedown', handleDragStart);
+        }
+
+        if (customScrollbarThumbRef.current && isMounted) {
+          customScrollbarThumbRef.current.removeEventListener('mousedown', handleDragStart);
+        }
+
         document.removeEventListener('mousemove', handleDragMove);
         document.removeEventListener('mouseup', handleDragEnd);
       };
@@ -92,23 +101,31 @@ const Scroller = ({ data, loading, title }) => {
   }, [loading]);
 
   if (loading) return (
-      <ScrollerWrapper>
-        {[0,1,2,3,4,5].map((item, index) => (
-            <div className={"flex flex-col flex-wrap gap-3"} key={index}>
-              <Skeleton className={"w-[200px] h-[300px] m-[3px] rounded-[10px]"} />
-              <Skeleton className={"w-[150px] h-[10px] m-[3px]"} />
-              <Skeleton className={"w-[100px] h-[10px] m-[3px]"} />
-            </div>
-        ))}
-      </ScrollerWrapper>
+      <div className={"mt-10 px-3"}>
+        <Skeleton className={"w-[200px] h-[40px] m-[3px] rounded-[10px]"} />
+        <ScrollerWrapper>
+          {[0,1,2,3,4,5].map((item, index) => (
+              <div className={"flex flex-col flex-wrap gap-3"} key={index}>
+                <Skeleton className={"w-[200px] h-[300px] m-[3px] rounded-[10px]"} />
+                <Skeleton className={"w-[150px] h-[10px] m-[3px]"} />
+                <Skeleton className={"w-[100px] h-[10px] m-[3px]"} />
+              </div>
+          ))}
+        </ScrollerWrapper>
+      </div>
   )
 
   return (
       <>
-        <div className={"flex items-center gap-2 mt-10 mb-2 px-3 font-bold text-xl cursor-pointer w-max"}>
-          <h1>{title}</h1>
-          <div>-&gt;</div>
-        </div>
+        <TabsWrapper>
+          <Tabs defaultValue="movie" value={group} className="w-[200px]">
+            <TabsList>
+              <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
+              <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
+              <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </TabsWrapper>
         <ScrollerContainer>
           <CustomScrollbar ref={customScrollbarRef}>
             <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
@@ -116,13 +133,13 @@ const Scroller = ({ data, loading, title }) => {
 
           <ScrollerWrapper ref={scrollerRef}>
             {data?.results?.map((movie) => (
-                <div className={"flex flex-col flex-wrap"} key={movie.id}>
+                <div className={"flex flex-col flex-wrap"} key={movie.id} onClick={() => console.log(movie, "<<")}>
                   <Card>
                     <Image src={movie.poster} alt={movie.title || "Movie Poster"} width={400} height={600} priority />
                   </Card>
-                  <div className={"max-w-[200px] whitespace-pre-wrap px-3"}>
+                  <div className={"max-w-[200px] whitespace-pre-wrap px-3 cursor-pointer"}>
                     <h1>
-                      {movie.title} ({new Date(movie.release_date).getFullYear()})
+                      {movie.title + (movie.release_date ? ` (${new Date(movie.release_date).getFullYear()})` : '')}
                     </h1>
                   </div>
                 </div>
@@ -133,6 +150,20 @@ const Scroller = ({ data, loading, title }) => {
   );
 };
 
+const TabsWrapper = styled.div`
+  margin: 40px 0 8px;
+  padding-inline: 12px;
+
+  .tab-title {
+    opacity: 1 !important;
+    color: #000000 !important;
+    font-weight: 600 !important;
+    margin-right: 10px !important;
+    html.dark & {
+      color: #FFFFFF !important;
+    }
+  }
+`;
 const ScrollerContainer = styled.div`
   position: relative;
   padding: 0 2px;
@@ -206,6 +237,12 @@ const Card = styled.div`
   transition: transform 0.2s ease-in-out;
   overflow: hidden;
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
