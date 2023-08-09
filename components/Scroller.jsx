@@ -104,7 +104,7 @@ const Scroller = ({ data, loading, title }) => {
 
   return (
       <>
-        <div className={"flex items-center gap-2 mt-10 mb-2 px-3 font-bold text-2xl cursor-pointer w-max"}>
+        <div className={"flex items-center gap-2 mt-10 mb-2 px-3 font-bold text-xl cursor-pointer w-max"}>
           <h1>{title}</h1>
           <div>-&gt;</div>
         </div>
