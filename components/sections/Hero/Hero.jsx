@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton"
 import styled from "styled-components";
+import Image from "next/image";
 
 const Hero = ({ loading, dataHero }) => {
   const settings = {
@@ -51,8 +52,9 @@ const Hero = ({ loading, dataHero }) => {
         {dataHero?.popularData?.results.map((movie, index) => (
           <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
             <Card className={"hero-card"}>
+              <Image src={movie.backdrop} alt={movie.title || "Movie Poster"} width={500} height={500} priority />
               <CardContent>
-                <h1>{movie.title}</h1>
+                <h1>{movie.title + ` (${new Date(movie.release_date).getFullYear()})`}</h1>
               </CardContent>
             </Card>
           </Wrapper>
@@ -65,15 +67,15 @@ const Hero = ({ loading, dataHero }) => {
 const Wrapper = styled.div`
   .hero-card {
     width: 100%;
-    height: 30vh;
-    background-image: url(${({ $backdrop }) => ($backdrop ? $backdrop : null)});
-    filter: brightness(0.8);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    height: 40vh;
+    overflow: hidden;
+    
+    img {
+      object-fit: cover;
+      filter: brightness(0.5);
+      width: 100%;
+      height: 100%;
+    }
 
     @media (max-width: 768px) {
       height: 25vh;
@@ -81,13 +83,16 @@ const Wrapper = styled.div`
   }
 
   h1 {
-    font-size: 3rem;
+    position: absolute;
+    font-size: 22px;
     font-weight: 700;
     color: #fff;
-    text-shadow: 0 0 10px #000;
+    text-shadow: 0 0 20px #000;
     z-index: 1;
+    bottom: 30px;
+    padding: 0 1rem;
     @media (max-width: 768px) {
-      font-size: 2rem;
+      font-size: 1rem;
     }
   }
 `;

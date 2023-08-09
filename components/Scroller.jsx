@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import { useEffect, useRef } from "react";
 import {Skeleton} from "@/components/ui/skeleton";
+import Image from "next/image";
 
 const Scroller = ({ data, loading, title }) => {
   const scrollerRef = useRef(null);
@@ -116,7 +117,9 @@ const Scroller = ({ data, loading, title }) => {
           <ScrollerWrapper ref={scrollerRef}>
             {data?.results?.map((movie) => (
                 <div className={"flex flex-col flex-wrap"} key={movie.id}>
-                  <Card poster={movie.poster} />
+                  <Card>
+                    <Image src={movie.poster} alt={movie.title || "Movie Poster"} width={400} height={600} priority />
+                  </Card>
                   <div className={"max-w-[200px] whitespace-pre-wrap px-3"}>
                     <h1>
                       {movie.title} ({new Date(movie.release_date).getFullYear()})
@@ -197,15 +200,11 @@ const Card = styled.div`
   width: 200px;
   height: 300px;
   margin: 10px;
-  background-color: #fff;
-  background-image: url(${(props) => props.poster});
-  background-size: cover;
-  background-position: center;
-  border: 1px solid #ddd;
+  //border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   transition: transform 0.2s ease-in-out;
+  overflow: hidden;
 
   &:hover {
     transform: scale(1.05);
