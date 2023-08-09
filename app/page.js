@@ -1,9 +1,11 @@
 "use client";
-import { Navbar } from "@/components/sections/Navbar/Navbar";
-import Hero from "@/components/sections/Hero/Hero";
+import { Navbar } from "@/components/Navbar/Navbar";
+import Hero from "@/components/Home/Hero/Hero";
 import { useState } from "react";
-import PopularSection from "@/components/sections/Popular/Popular";
+import PopularSection from "@/components/Home/Popular/Popular";
 import useTrending from "@/api/useTrending";
+import TopRated from "@/components/Home/TopRated/TopRated";
+import Footer from "@/components/Footer/Footer";
 
 function Home() {
   const [time, setTime] = useState("day");
@@ -18,7 +20,9 @@ function Home() {
         {/* SECTION POPULAR */}
         <PopularSection />
         {/* SECTION TOP RATED */}
+        <TopRated />
       </div>
+      {/*<Footer />*/}
     </div>
   );
 }
