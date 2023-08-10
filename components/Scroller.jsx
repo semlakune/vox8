@@ -132,14 +132,15 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
           </CustomScrollbar>
 
           <ScrollerWrapper ref={scrollerRef}>
-            {data?.results?.map((movie) => (
-                <div className={"flex flex-col flex-wrap"} key={movie.id} onClick={() => console.log(movie, "<<")}>
+            {data?.results?.map((item) => (
+                <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => console.log(item, "<<")}>
                   <Card>
-                    <Image src={movie.poster} alt={movie.title || "Movie Poster"} width={400} height={600} priority />
+                    <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} priority />
+                    <div className={"vote-average"}>{item.vote_average}</div>
                   </Card>
                   <div className={"max-w-[200px] whitespace-pre-wrap px-3 cursor-pointer"}>
                     <h1>
-                      {movie.title + (movie.release_date ? ` (${new Date(movie.release_date).getFullYear()})` : '')}
+                      {item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}
                     </h1>
                   </div>
                 </div>
@@ -219,7 +220,7 @@ const ScrollerWrapper = styled.div`
   margin-top: 5px;
 
   &::-webkit-scrollbar {
-    display: none;  // Hide default scrollbar
+    display: none; // Hide default scrollbar
   }
 
   h1 {
@@ -238,14 +239,34 @@ const Card = styled.div`
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.2s ease-in-out;
-  overflow: hidden;
+  //overflow: hidden;
+  position: relative;
 
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 10px;
   }
-  
+
+  .vote-average {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    bottom: -10px;
+    right: -10px;
+    border-radius: 50%;
+    background-color: rgb(255, 153, 0);
+    color: #000000;
+    font-weight: 600;
+    z-index: 1;
+    overflow: visible;
+    text-shadow: 0 0 10px #ffffff;
+  }
+
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
