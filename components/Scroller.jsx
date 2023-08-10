@@ -120,7 +120,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
         <TabsWrapper>
           <Tabs defaultValue="movie" value={group} className="w-[200px]">
             <TabsList>
-              <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
+              <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
               <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
               <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
             </TabsList>
@@ -158,9 +158,11 @@ const TabsWrapper = styled.div`
     opacity: 1 !important;
     color: #000000 !important;
     font-weight: 600 !important;
-    margin-right: 10px !important;
     html.dark & {
       color: #FFFFFF !important;
+    }
+    span {
+      margin: 0 0 0 12px;
     }
   }
 `;
@@ -224,6 +226,7 @@ const ScrollerWrapper = styled.div`
     font-size: 14px;
     font-weight: 600;
     margin-bottom: 20px;
+    height: 80px;
   }
 `;
 const Card = styled.div`

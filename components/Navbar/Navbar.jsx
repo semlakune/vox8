@@ -1,5 +1,4 @@
 "use client"
-
 import Link from "next/link";
 import Image from "next/image";
 import {useState} from "react";
@@ -20,15 +19,15 @@ export const Navbar = () => {
         <div
             className="sticky top-0 z-50 border-b bg-white dark:bg-black dark:border-gray-700"
         >
-            <nav className="container mx-auto max-w-7xl px-6 py-2 flex justify-between items-center">
+            <div className="container mx-auto max-w-7xl px-6 py-2 flex justify-between items-center">
                 {isMobile && (
-                    <>
+                    <div>
                         {isMenuMobileOpen ? (
                             <Cross1Icon className={"w-6 h-6"} onClick={() => setIsMenuMobileOpen(!isMenuMobileOpen)} />
                         ) : (
                             <HamburgerMenuIcon className={"w-6 h-6"} onClick={() => setIsMenuMobileOpen(!isMenuMobileOpen)} />
                         )}
-                    </>
+                    </div>
                 )}
                 <div className={"flex justify-between items-center gap-8"}>
                     <Link href="/">
@@ -38,15 +37,15 @@ export const Navbar = () => {
                 </div>
                 <SearchToggleSection search={search} setSearch={setSearch} />
                 {isMobile && (
-                    <>
+                    <div>
                         {isSearchMobileOpen ? (
                             <CrossCircledIcon className={"w-6 h-6"} onClick={() => setIsSearchMobileOpen(!isSearchMobileOpen)} />
                         ) : (
                             <MagnifyingGlassIcon className={"w-6 h-6"} onClick={() => setIsSearchMobileOpen(!isSearchMobileOpen)} />
                         )}
-                    </>
+                    </div>
                 )}
-            </nav>
+            </div>
         </div>
     )
 }
