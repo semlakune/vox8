@@ -49,12 +49,12 @@ const Hero = ({ loading, data }) => {
   return (
     <SliderWrapper>
       <Slider {...settings}>
-        {data?.results.map((movie, index) => (
-          <Wrapper key={index} className={"px-3"} $backdrop={movie.backdrop}>
-            <Card className={"hero-card"}>
-              <Image src={movie.backdrop} alt={movie.title || "Movie Poster"} width={1400} height={800} priority />
+        {data?.results.map((item, index) => (
+          <Wrapper key={index} className={"px-3"} $backdrop={item.backdrop}>
+            <Card className={"hero-card cursor-pointer"} onClick={() => console.log(item)}>
+              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} priority />
               <CardContent>
-                <h1>{movie.title + (movie.release_date ? ` (${new Date(movie.release_date).getFullYear()})` : '')}</h1>
+                <h1>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
               </CardContent>
             </Card>
           </Wrapper>
@@ -65,16 +65,24 @@ const Hero = ({ loading, data }) => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   .hero-card {
     width: 100%;
     height: 40vh;
     overflow: hidden;
-    
+
     img {
       object-fit: cover;
-      //filter: brightness(0.5);
       width: 100%;
       height: 100%;
+      transition: all 0.5s ease-in-out;
+    }
+
+    &:hover {
+      img {
+        transform: scale(1.1);
+        filter: brightness(0.5);
+      }
     }
 
     @media (max-width: 768px) {
@@ -84,18 +92,23 @@ const Wrapper = styled.div`
 
   h1 {
     position: absolute;
+    top: 50%; 
+    left: 50%;
+    transform: translate(-50%, -50%); 
     font-size: 22px;
     font-weight: 700;
     color: #fff;
     text-shadow: 0 0 20px #000;
     z-index: 1;
-    bottom: 30px;
+    text-align: center;
     padding: 0 1rem;
+
     @media (max-width: 768px) {
       font-size: 1rem;
     }
   }
 `;
+
 
 const SliderWrapper = styled.div`
   .dots_custom {

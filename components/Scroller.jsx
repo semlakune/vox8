@@ -259,12 +259,13 @@ const Card = styled.div`
     bottom: -10px;
     right: -10px;
     border-radius: 50%;
-    background-color: rgb(255, 153, 0);
+    background-color: rgb(255, 235, 0);
     color: #000000;
     font-weight: 600;
     z-index: 1;
     overflow: visible;
     text-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 10px #ffffff;
   }
 
   &:hover {
