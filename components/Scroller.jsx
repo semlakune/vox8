@@ -11,7 +11,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
   const customScrollbarThumbRef = useRef(null);
 
   useEffect(() => {
-    if (!loading) {
+    if (!loading && data.results.length > 0) {
       const scroller = scrollerRef.current;
       const container = scroller?.parentNode;
 
@@ -53,7 +53,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (!loading && isMounted) {
+    if (!loading && isMounted && data.results.length > 0) {
       let isDragging = false;
       let lastClientX; // to store the last x position
 
@@ -120,20 +120,33 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
         <TabsWrapper>
           <Tabs defaultValue="movie" value={group} className="w-[200px]">
             <TabsList>
-              <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
-              <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
-              <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
+              {title === "Similar" ? (
+                  <>
+                    <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
+                  </>
+              ) : (
+                  <>
+                    <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
+                    <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
+                    <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
+                  </>
+              )}
             </TabsList>
           </Tabs>
         </TabsWrapper>
         <ScrollerContainer>
-          <CustomScrollbar ref={customScrollbarRef}>
-            <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
-          </CustomScrollbar>
+          {data.results.length > 0 && (
+              <CustomScrollbar ref={customScrollbarRef}>
+                <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
+              </CustomScrollbar>
+          )}
 
           <ScrollerWrapper ref={scrollerRef}>
+            {data?.results?.length === 0 && (
+                <div className={"mx-4"}>No data</div>
+            )}
             {data?.results?.map((item) => (
-                <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => console.log(item, "<<")}>
+                <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => window.open(`/detail/${group}/${item.id}`, "_self")}>
                   <Card>
                     <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} priority />
                     <div className={"vote-average"}>{item.vote_average}</div>
@@ -261,11 +274,12 @@ const Card = styled.div`
     border-radius: 50%;
     background-color: rgb(255, 235, 0);
     color: #000000;
+    font-size: 14px;
     font-weight: 600;
     z-index: 1;
     overflow: visible;
     text-shadow: 0 0 10px #ffffff;
-    box-shadow: 0 0 10px #ffffff;
+    box-shadow: 0 0 20px #ffffff;
   }
 
   &:hover {
