@@ -48,7 +48,7 @@ const DetailPage = ({ params }) => {
       ) : (
           <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
             <DetailWrapper>
-              <div className={"flex justify-start gap-10"}>
+              <div className={"flex justify-start gap-5 mobile:flex-col laptop:flex-row"}>
                 <div>
                   {isLoadingDetail || !dominantColor ? (
                       <Skeleton className={"rounded-xl w-[320px] h-[480px]"} />
@@ -104,16 +104,23 @@ const DetailWrapper = styled.div`
   padding: 12px;
   img {
     height: 480px !important;
+    width: 560px !important;
+    object-fit: cover;
   }
 `;
 
 const InnerDetail = styled.div`
   width: 100vw;
   height: 480px;
-  border-radius: 8px;
+  border-radius: 0.75rem;
   background-image: url(${({ $backdrop }) => $backdrop});
   background-size: cover;
   overflow: hidden;
+  
+  @media (max-width: 768px) {
+    height: 100%;
+    width: 100%;
+  }
 `;
 
 const InnerDetailFilter = styled.div`
