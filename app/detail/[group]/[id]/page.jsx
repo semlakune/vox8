@@ -21,6 +21,8 @@ const DetailPage = ({ params }) => {
   const [dominantColor, setDominantColor] = useState(null);
   const [contrastColor, setContrastColor] = useState('white');
 
+  const isIdNumeric = str => /^\d+$/.test(str);
+
   useEffect(() => {
     if (dataDetail?.poster) {
       const getDominantColor = async () => {
@@ -43,7 +45,7 @@ const DetailPage = ({ params }) => {
   return (
     <>
       <Navbar />
-      {dataDetail?.message === "Not Found" ? (
+      {dataDetail?.message === "Not Found" || !isIdNumeric(id) ? (
           <NotFound />
       ) : (
           <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
