@@ -11,6 +11,29 @@ import {
 import { Skeleton } from "@/components/ui/skeleton"
 import styled from "styled-components";
 import Image from "next/image";
+import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
+
+function CustomNextArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+      <ChevronRightIcon
+          className={className}
+          style={{ ...style, display: 'block', color: 'black', fontSize: '20px' }}
+          onClick={onClick}
+      />
+  );
+}
+
+function CustomPrevArrow(props) {
+  const { className, style, onClick } = props;
+  return (
+      <ChevronLeftIcon
+          className={className}
+          style={{ ...style, display: 'block', color: 'black', fontSize: '20px' }}
+          onClick={onClick}
+      />
+  );
+}
 
 const Hero = ({ loading, data }) => {
   const settings = {
@@ -22,7 +45,8 @@ const Hero = ({ loading, data }) => {
     autoplay: true,
     autoplaySpeed: 3000,
     cssEase: "linear",
-    arrows: false,
+    nextArrow: <CustomNextArrow />,
+    prevArrow: <CustomPrevArrow />,
     appendDots: (dots) => (
       <div
         style={{
@@ -50,8 +74,8 @@ const Hero = ({ loading, data }) => {
     <SliderWrapper>
       <Slider {...settings}>
         {data?.results.map((item, index) => (
-          <Wrapper key={index} className={"px-3"} $backdrop={item.backdrop}>
-            <Card className={"hero-card cursor-pointer"} onClick={() => console.log(item)}>
+          <Wrapper key={index} className={"px-3"}>
+            <Card className={"hero-card"} onClick={() => window.open(`/detail/${item.group}/${item.id}`, "_self")}>
               <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} priority />
               <CardContent>
                 <h1>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
@@ -66,13 +90,15 @@ const Hero = ({ loading, data }) => {
 
 const Wrapper = styled.div`
   position: relative;
+  
   .hero-card {
     width: 100%;
-    height: 40vh;
+    height: 50vh;
     overflow: hidden;
 
     img {
       object-fit: cover;
+      object-position: top;
       width: 100%;
       height: 100%;
       transition: all 0.5s ease-in-out;
@@ -80,6 +106,7 @@ const Wrapper = styled.div`
 
     &:hover {
       img {
+        cursor: pointer;
         transform: scale(1.1);
         filter: brightness(0.5);
       }
@@ -111,6 +138,13 @@ const Wrapper = styled.div`
 
 
 const SliderWrapper = styled.div`
+  .slick-next:before,
+  .slick-prev:before {
+    color: #000;
+    html.dark & {
+      color: #fff;
+    }
+  }
   .dots_custom {
     display: flex;
     justify-content: center;

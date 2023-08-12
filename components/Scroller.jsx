@@ -11,7 +11,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
   const customScrollbarThumbRef = useRef(null);
 
   useEffect(() => {
-    if (!loading && data.results.length > 0) {
+    if (!loading && data.results?.length > 0) {
       const scroller = scrollerRef.current;
       const container = scroller?.parentNode;
 
@@ -53,7 +53,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
 
   useEffect(() => {
     let isMounted = true;
-    if (!loading && isMounted && data.results.length > 0) {
+    if (!loading && isMounted && data.results?.length > 0) {
       let isDragging = false;
       let lastClientX; // to store the last x position
 
@@ -102,7 +102,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
 
   if (loading) return (
       <div className={"mt-10 px-3"}>
-        <Skeleton className={"w-[200px] h-[40px] m-[3px] rounded-[10px]"} />
+        <Skeleton className={"w-[250px] h-[36px] m-[3px] rounded-[10px]"} />
         <ScrollerWrapper>
           {[0,1,2,3,4,5].map((item, index) => (
               <div className={"flex flex-col flex-wrap gap-3"} key={index}>
@@ -118,24 +118,24 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
   return (
       <>
         <TabsWrapper>
-          <Tabs defaultValue="movie" value={group} className="w-[200px]">
-            <TabsList>
-              {title === "Similar" ? (
-                  <>
-                    <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
-                  </>
-              ) : (
-                  <>
-                    <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
-                    <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
-                    <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
-                  </>
-              )}
-            </TabsList>
-          </Tabs>
+          {title !== "Similar" ? (
+              <Tabs defaultValue="movie" value={group} className="w-[200px]">
+                <TabsList>
+                  <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
+                  <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
+                  <TabsTrigger value="tv"  onClick={() => setGroup("tv")}>TV/Series</TabsTrigger>
+                </TabsList>
+              </Tabs>
+          ) : (
+              <Tabs defaultValue="" value={""} className="w-[200px]">
+                <TabsList>
+                  <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
+                </TabsList>
+              </Tabs>
+          )}
         </TabsWrapper>
         <ScrollerContainer>
-          {data.results.length > 0 && (
+          {data.results?.length > 0 && (
               <CustomScrollbar ref={customScrollbarRef}>
                 <CustomScrollbarThumb ref={customScrollbarThumbRef}></CustomScrollbarThumb>
               </CustomScrollbar>
@@ -143,7 +143,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
 
           <ScrollerWrapper ref={scrollerRef}>
             {data?.results?.length === 0 && (
-                <div className={"mx-4"}>No data</div>
+                <div className={"mx-4"}>No similar data</div>
             )}
             {data?.results?.map((item) => (
                 <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => window.open(`/detail/${group}/${item.id}`, "_self")}>
