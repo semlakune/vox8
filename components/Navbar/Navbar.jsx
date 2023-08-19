@@ -4,6 +4,9 @@ import Image from "next/image";
 import {useEffect, useState} from "react";
 import dynamic from "next/dynamic";
 import {Cross1Icon, CrossCircledIcon, HamburgerMenuIcon, MagnifyingGlassIcon} from "@radix-ui/react-icons";
+import styled from "styled-components";
+import {Button} from "@/components/ui/button";
+import {useRouter} from "next/navigation";
 
 const MenuSection = dynamic(() => import('./MenuSection'), { ssr: false });
 const SearchToggleSection = dynamic(() => import('./SearchAndToggleSection'), { ssr: false });
@@ -13,6 +16,8 @@ export const Navbar = () => {
     const [search, setSearch] = useState("");
     const [isMenuMobileOpen, setIsMenuMobileOpen] = useState(false);
     const [isSearchMobileOpen, setIsSearchMobileOpen] = useState(false);
+
+    const router = useRouter()
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -46,14 +51,56 @@ export const Navbar = () => {
                 <SearchToggleSection search={search} setSearch={setSearch} isMobile={isMobile} />
                 {isMobile ? (
                     <>
-                        {isSearchMobileOpen ? (
-                            <CrossCircledIcon className={"w-6 h-6"} onClick={() => setIsSearchMobileOpen(!isSearchMobileOpen)} />
-                        ) : (
-                            <MagnifyingGlassIcon className={"w-6 h-6"} onClick={() => setIsSearchMobileOpen(!isSearchMobileOpen)} />
-                        )}
+                        <MagnifyingGlassIcon className={"w-6 h-6"} onClick={() => setIsSearchMobileOpen(!isSearchMobileOpen)} />
                     </>
                 ) : null}
             </div>
+
+            {isSearchMobileOpen && (
+                <ModalSearch onClick={() => {
+                    setIsSearchMobileOpen(false)
+                    setSearch("")
+                }}>
+                    <div className="modal" onClick={(e) => e.stopPropagation()}>
+                        <input type="text" onChange={(e) => setSearch(e.target.value)} value={search} />
+                        {search.length > 0 && <CrossCircledIcon className={"w-10 h-10 ml-0 mr-5"} onClick={() => setSearch("")} />}
+                        <Button onClick={() => router.push(`/search?q=${search.replace(/\s+/g, "+").toLowerCase()}`)}>Search</Button>
+                    </div>
+                </ModalSearch>
+            )}
         </div>
     )
 }
+
+const ModalSearch = styled.div`
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .modal {
+        width: 100%;
+        max-width: 360px;
+        background-color: #fff;
+        padding: 8px 10px;
+        border-radius: 8px;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        
+        input {
+            width: 100%;
+            border: none;
+            outline: none;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    }
+`;
