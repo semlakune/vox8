@@ -61,6 +61,9 @@ const DetailPage = ({ params }) => {
                           width={510}
                           height={1400}
                           className={"rounded-xl"}
+                          blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="}
+                          placeholder={"blur"}
+                          priority
                       />
                   )}
                 </div>
@@ -91,7 +94,7 @@ const DetailPage = ({ params }) => {
             {/* SIMILAR SECTION */}
             <Scroller
                 data={dataSimilar}
-                loading={isLoadingSimilar}
+                loading={isLoadingSimilar || !dominantColor}
                 error={isErrorSimilar}
                 title={"Similar"}
                 group={group}

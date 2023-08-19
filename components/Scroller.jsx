@@ -4,8 +4,10 @@ import { useEffect, useRef } from "react";
 import {Skeleton} from "@/components/ui/skeleton";
 import Image from "next/image";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
+import {useRouter} from "next/navigation";
 
 const Scroller = ({ data, loading, error, group, setGroup, title }) => {
+  const router = useRouter();
   const scrollerRef = useRef(null);
   const customScrollbarRef = useRef(null);
   const customScrollbarThumbRef = useRef(null);
@@ -146,9 +148,9 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
                 <div className={"mx-4"}>No similar data</div>
             )}
             {data?.results?.map((item) => (
-                <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => window.open(`/detail/${group}/${item.id}`, "_self")}>
+                <div className={"flex flex-col flex-wrap"} key={item.id} onClick={() => router.push(`/detail/${group}/${item.id}`)}>
                   <Card>
-                    <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} priority />
+                    <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} priority blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} placeholder={"blur"} />
                     <div className={"vote-average"}>{item.vote_average}</div>
                   </Card>
                   <div className={"max-w-[200px] whitespace-pre-wrap px-3 cursor-pointer"}>

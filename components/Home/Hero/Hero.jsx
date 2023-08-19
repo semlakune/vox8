@@ -12,6 +12,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import styled from "styled-components";
 import Image from "next/image";
 import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
+import {useRouter} from "next/navigation";
 
 function CustomNextArrow(props) {
   const { className, style, onClick } = props;
@@ -36,6 +37,7 @@ function CustomPrevArrow(props) {
 }
 
 const Hero = ({ loading, data }) => {
+  const router = useRouter();
   const settings = {
     dots: true,
     infinite: true,
@@ -75,8 +77,8 @@ const Hero = ({ loading, data }) => {
       <Slider {...settings}>
         {data?.results.map((item, index) => (
           <Wrapper key={index} className={"px-3"}>
-            <Card className={"hero-card"} onClick={() => window.open(`/detail/${item.group}/${item.id}`, "_self")}>
-              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} priority />
+            <Card className={"hero-card"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>
+              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} placeholder={"blur"} blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} priority />
               <CardContent>
                 <h1>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
               </CardContent>
