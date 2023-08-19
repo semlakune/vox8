@@ -2,18 +2,22 @@
 import React from "react";
 import styled from "styled-components";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useRouter } from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ContentLists({ type, group, data, loading, error, setPage }) {
   const router = useRouter();
+  const searchParams = useSearchParams()
+  const search = searchParams.get('q')
 
   if (loading) {
     return (
       <div className={"mx-3"}>
         {/*FILTER*/}
-        <Skeleton className={"w-[460px] h-[36px] m-[3px] rounded-[8px]"} />
+        {type === "search" ? null : (
+            <Skeleton className={"w-[460px] h-[36px] m-[3px] rounded-[8px]"} />
+        )}
         {/*CONTENT*/}
         <div className={"flex flex-wrap my-5"}>
           {[...Array(20)].map((_, index) => (
@@ -29,64 +33,70 @@ export default function ContentLists({ type, group, data, loading, error, setPag
   return (
     <>
       {/*FILTER*/}
-      <TabsWrapper>
-        <Tabs value={type} className="w-[200px]">
-          <TabsList>
-            <TabsTrigger value={group} className={"tab-title"} disabled>
-              {group === "movie" ? "Movies" : "TV/Series"} <span>|</span>
-            </TabsTrigger>
-            {group === "movie" ? (
-              <>
+      {type === "search" ? (
+          <div>
+            <h1 className={"text-sm font-bold"}>Search Results for : <em>{search}</em></h1>
+          </div>
+      ) : (
+          <TabsWrapper>
+            <Tabs value={type} className="w-[200px]">
+              <TabsList>
+                <TabsTrigger value={group} className={"tab-title"} disabled>
+                  {group === "movie" ? "Movies" : "TV/Series"} <span>|</span>
+                </TabsTrigger>
+                {group === "movie" ? (
+                    <>
+                      <TabsTrigger
+                          value="now-playing"
+                          onClick={() => router.push("/movie/now_playing")}
+                      >
+                        Now Playing
+                      </TabsTrigger>
+                      <TabsTrigger
+                          value="upcoming"
+                          onClick={() => router.push("/movie/upcoming")}
+                      >
+                        Upcoming
+                      </TabsTrigger>
+                    </>
+                ) : (
+                    <>
+                      <TabsTrigger
+                          value="airing-today"
+                          onClick={() => router.push("/tv/airing_today")}
+                      >
+                        Airing Today
+                      </TabsTrigger>
+                      <TabsTrigger
+                          value="on-the-air"
+                          onClick={() => router.push("/tv/on_the_air")}
+                      >
+                        On The Air
+                      </TabsTrigger>
+                    </>
+                )}
                 <TabsTrigger
-                  value="now-playing"
-                  onClick={() => router.push("/movie/now_playing")}
+                    value="popular"
+                    onClick={() => router.push(`/${group}/popular`)}
                 >
-                  Now Playing
+                  Popular
                 </TabsTrigger>
                 <TabsTrigger
-                  value="upcoming"
-                  onClick={() => router.push("/movie/upcoming")}
+                    value="top-rated"
+                    onClick={() => router.push(`/${group}/top_rated`)}
                 >
-                  Upcoming
+                  Top Rated
                 </TabsTrigger>
-              </>
-            ) : (
-              <>
-                <TabsTrigger
-                  value="airing-today"
-                  onClick={() => router.push("/tv/airing_today")}
-                >
-                  Airing Today
-                </TabsTrigger>
-                <TabsTrigger
-                  value="on-the-air"
-                  onClick={() => router.push("/tv/on_the_air")}
-                >
-                  On The Air
-                </TabsTrigger>
-              </>
-            )}
-            <TabsTrigger
-              value="popular"
-              onClick={() => router.push(`/${group}/popular`)}
-            >
-              Popular
-            </TabsTrigger>
-            <TabsTrigger
-              value="top-rated"
-              onClick={() => router.push(`/${group}/top_rated`)}
-            >
-              Top Rated
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
-      </TabsWrapper>
+              </TabsList>
+            </Tabs>
+          </TabsWrapper>
+      )}
       {/*CONTENT*/}
       <ContentWrapper>
         {data?.results?.map((item, index) => {
           return (
             <React.Fragment key={index}>
-              <Card onClick={() => router.push(`/detail/${group}/${item.id}`)}>
+              <Card onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>
                 <Image
                   src={item.poster}
                   alt={item.title || "Movie Poster"}
