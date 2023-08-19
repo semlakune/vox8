@@ -134,7 +134,7 @@ const InnerDetailFilter = styled.div`
   background: linear-gradient(
     to bottom right,
     rgb(${({ $dominantColor }) => $dominantColor?.join(", ")}),
-    rgba(${({ $dominantColor }) => $dominantColor?.join(", ")}, 0.25)
+    rgba(${({ $dominantColor }) => $dominantColor?.join(", ")}, 0.6)
   );
   z-index: 1;
   padding: 20px;
