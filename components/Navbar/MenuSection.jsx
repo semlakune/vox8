@@ -5,12 +5,10 @@ import {
     NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
 import {Button} from "@/components/ui/button";
-import {useMediaQuery} from "react-responsive";
 import {useRouter} from 'next/navigation';
 
-const MenuSection = () => {
+const MenuSection = ({isMobile}) => {
     const router = useRouter();
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
 
 
     if (isMobile) return null

@@ -121,7 +121,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
       <>
         <TabsWrapper>
           {title !== "Similar" ? (
-              <Tabs defaultValue="movie" value={group} className="w-[200px]">
+              <Tabs defaultValue="movie" value={group}>
                 <TabsList>
                   <TabsTrigger value={title} className={"tab-title"} disabled>{title} <span>|</span></TabsTrigger>
                   <TabsTrigger value="movie" onClick={() => setGroup("movie")}>Movies</TabsTrigger>
@@ -129,7 +129,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
                 </TabsList>
               </Tabs>
           ) : (
-              <Tabs defaultValue="" value={""} className="w-[200px]">
+              <Tabs defaultValue="" value={""}>
                 <TabsList>
                   <TabsTrigger value={title} className={"tab-title"} disabled>{title}</TabsTrigger>
                 </TabsList>
@@ -180,6 +180,14 @@ const TabsWrapper = styled.div`
     span {
       margin: 0 0 0 12px;
     }
+  }
+  
+  @media (max-width: 768px) {
+    width: 100% !important;
+    margin: 60px auto 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 `;
 const ScrollerContainer = styled.div`
@@ -286,6 +294,11 @@ const Card = styled.div`
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
+  }
+  
+  @media (max-width: 768px) {
+    width: 150px;
+    height: 225px;
   }
 `;
 const CustomScrollbar = styled.div`
