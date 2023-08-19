@@ -205,6 +205,9 @@ const ScrollerContainer = styled.div`
     pointer-events: none;
     z-index: 2;
     visibility: hidden; // Start with the gradients hidden
+    @media (max-width: 768px) {
+      width: 20px;
+    }
   }
 
   html.light &::before {
