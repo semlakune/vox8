@@ -1,1 +1,5 @@
 ![readmebox](https://github.com/semlakune/vox8/assets/107777384/b6d58c61-650b-4a90-9091-77c2b78928b2)
+
+---
+## Overview
+__Vox8__ is a recent addition to my portfolio—an innovative web platform tailored to provide comprehensive insights into both movies and TV series. Developed using Next.js, this project offers an exceptional user experience enhanced by its carefully curated tech stack. Integrating the Shadcn library, which harnesses the power of Radix UI and Tailwind CSS, Vox8 boasts reusability and aesthetic finesse in its design and layout. Leveraging the efficiency of SWR for data fetching, the platform ensures seamless updates and responsiveness. The implementation of Styled Components further enhances the visual appeal and user interaction. Powered by the TMDB API, Vox8 empowers users to effortlessly explore a wealth of entertainment content, making it a go-to hub for movie and TV series enthusiasts.
