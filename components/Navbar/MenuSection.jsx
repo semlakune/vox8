@@ -23,16 +23,16 @@ const MenuSection = () => {
                         <NavigationMenuContent>
                             <ul className="flex flex-col w-max gap-1 p-2">
                                 <li>
-                                    <Button onClick={() => router.push("/movies/now_playing")} variant={"ghost"} id={"now-playing"}><p>Now Playing</p></Button>
+                                    <Button onClick={() => router.push("/movie/now_playing")} variant={"ghost"} id={"now-playing"}><p>Now Playing</p></Button>
                                 </li>
                                 <li>
-                                    <Button onClick={() => router.push("/movies/popular")} variant={"ghost"} id={"popular"}><p>Popular</p></Button>
+                                    <Button onClick={() => router.push("/movie/upcoming")} variant={"ghost"} id={"upcoming"}><p>Upcoming</p></Button>
                                 </li>
                                 <li>
-                                    <Button onClick={() => router.push("/movies/top_rated")} variant={"ghost"} id={"top-rated"}><p>Top Rated</p></Button>
+                                    <Button onClick={() => router.push("/movie/popular")} variant={"ghost"} id={"popular"}><p>Popular</p></Button>
                                 </li>
                                 <li>
-                                    <Button onClick={() => router.push("/movies/upcoming")} variant={"ghost"} id={"upcoming"}><p>Upcoming</p></Button>
+                                    <Button onClick={() => router.push("/movie/top_rated")} variant={"ghost"} id={"top-rated"}><p>Top Rated</p></Button>
                                 </li>
                             </ul>
                         </NavigationMenuContent>

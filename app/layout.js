@@ -7,7 +7,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Vox8",
-  description: "Search for your favorite movies and TV shows.",
+  description: "Search for your favorite movie and TV shows.",
 };
 
 export default function RootLayout({ children }) {

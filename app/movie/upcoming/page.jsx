@@ -2,16 +2,16 @@
 import { Navbar } from "@/components/Navbar/Navbar";
 import ContentLists from "@/components/ContentLists";
 import {useState} from "react";
-import useOnTheAir from "@/api/useOnTheAir";
+import useUpcoming from "@/api/useUpcoming";
 
-export default function OnTheAir() {
+export default function UpcomingMovie() {
   const [page, setPage] = useState(1);
-  const { dataOnTheAir, isLoadingOnTheAir, isErrorOnTheAir } = useOnTheAir(page);
+  const { dataUpcoming, isLoadingUpcoming, isErrorUpcoming } = useUpcoming(page);
   return (
       <>
         <Navbar />
         <div className={"container mt-5 px-6 max-w-7xl pb-20"}>
-          <ContentLists type={"on-the-air"} group={"tv"} data={dataOnTheAir} loading={isLoadingOnTheAir} error={isErrorOnTheAir} setPage={setPage} />
+          <ContentLists type={"upcoming"} group={"movie"} data={dataUpcoming} loading={isLoadingUpcoming} error={isErrorUpcoming} setPage={setPage} />
         </div>
       </>
   );
