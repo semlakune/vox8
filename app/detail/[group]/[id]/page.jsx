@@ -41,6 +41,13 @@ const DetailPage = ({ params }) => {
     }
   }, [dataDetail?.poster]);
 
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    })
+  }, []);
+
 
   return (
     <>
