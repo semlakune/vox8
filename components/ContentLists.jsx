@@ -1,15 +1,27 @@
 "use client";
-import React from "react";
+import React, {useEffect, useState} from "react";
 import styled from "styled-components";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {useRouter, useSearchParams} from "next/navigation";
 import Image from "next/image";
 import { Skeleton } from "@/components/ui/skeleton";
+import formatType from "@/lib/formatType";
 
 export default function ContentLists({ type, group, data, loading, error, setPage }) {
   const router = useRouter();
   const searchParams = useSearchParams()
   const search = searchParams.get('q')
+
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      setIsMobile(window.innerWidth <= 768);
+      window.addEventListener("resize", () => {
+        setIsMobile(window.innerWidth <= 768);
+      });
+    }
+  }, []);
 
   if (loading) {
     return (
@@ -91,12 +103,15 @@ export default function ContentLists({ type, group, data, loading, error, setPag
             </Tabs>
           </TabsWrapper>
       )}
+      {(isMobile && type !== "search") && (
+          <div className={"m-2 border rounded-md py-2 px-3"}>{formatType(type)} {group === "movie" ? "Movies" : "TV/Series"}</div>
+      )}
       {/*CONTENT*/}
       <ContentWrapper>
         {data?.results?.map((item, index) => {
           return (
-            <React.Fragment key={index}>
-              <Card onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>
+            <div className={"flex flex-wrap laptop:flex-col mobile:flex-row items-start justify-start laptop:h-[400px] mobile:h-[280px]"} key={index}>
+              <Card onClick={() => router.push(`/detail/${group ? group : item.group}/${item.id}`)}>
                 <Image
                   src={item.poster}
                   alt={item.title || "Movie Poster"}
@@ -110,7 +125,10 @@ export default function ContentLists({ type, group, data, loading, error, setPag
                 />
                 <div className={"vote-average"}>{item.vote_average}</div>
               </Card>
-            </React.Fragment>
+              <div className={"laptop:max-w-[200px] mobile:max-w-[150px] laptop:mx-[20px] mobile:m-[10px]"}>
+                <h1 className={"text-sm font-bold whitespace-pre-wrap cursor-pointer"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
+              </div>
+            </div>
           );
         })}
       </ContentWrapper>
@@ -133,6 +151,10 @@ const TabsWrapper = styled.div`
       margin: 0 0 0 12px;
     }
   }
+  
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -140,6 +162,10 @@ const ContentWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 `;
 
 const Card = styled.div`
@@ -153,6 +179,16 @@ const Card = styled.div`
   transition: transform 0.2s ease-in-out;
   //overflow: hidden;
   position: relative;
+  
+  @media (max-width: 768px) {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 170px;
+    height: 240px;
+    margin: 10px;
+  }
 
   img {
     width: 100%;
