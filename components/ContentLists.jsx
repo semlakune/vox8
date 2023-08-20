@@ -125,9 +125,9 @@ export default function ContentLists({ type, group, data, loading, error, setPag
                 />
                 <div className={"vote-average"}>{item.vote_average}</div>
               </Card>
-              <div className={"laptop:max-w-[200px] mobile:max-w-[150px] laptop:mx-[20px] laptop:my-0 mobile:mx-[10px] mobile:my-[10px]"}>
-                <h1 className={"text-sm font-bold whitespace-pre-wrap cursor-pointer"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
-              </div>
+              <TitleWrapper>
+                <h1 className={"text-sm font-bold cursor-pointer"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
+              </TitleWrapper>
             </div>
           );
         })}
@@ -220,5 +220,19 @@ const Card = styled.div`
   &:hover {
     transform: scale(1.05);
     cursor: pointer;
+  }
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 200px;
+  margin: 0 20px;
+  @media (max-width: 768px) {
+    max-width: 180px;
+    margin: 10px;
+  }
+  @media (max-width: 480px) {
+    max-width: 100px;
   }
 `;
