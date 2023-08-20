@@ -14,7 +14,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning style={{scrollBehavior:'smooth'}}>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
         </ThemeProvider>
       </body>
