@@ -174,7 +174,10 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
       </TabsWrapper>
       <ScrollerContainer>
         {data.results?.length > 0 && (
-          <CustomScrollbar ref={customScrollbarRef}>
+          <CustomScrollbar
+            ref={customScrollbarRef}
+            CustomScrollbarThumb={customScrollbarThumbRef}
+          >
             <CustomScrollbarThumb
               ref={customScrollbarThumbRef}
             ></CustomScrollbarThumb>
@@ -372,6 +375,15 @@ const CustomScrollbar = styled.div`
   overflow: hidden;
   cursor: pointer;
   border-radius: 10px;
+  transition: height 0.2s ease-in-out;
+
+  &:hover {
+    height: 12px;
+  }
+
+  &:active {
+    height: 12px;
+  }
 
   html.dark & {
     background: #4f4f4f;
@@ -383,14 +395,11 @@ const CustomScrollbarThumb = styled.div`
   top: 0;
   bottom: 0;
   width: 20px; // Initial width, will adjust with JS
-  height: 5px;
+  height: 100%;
   background: #121212;
   border-radius: 10px;
-  cursor: grab;
-
-  &:active {
-    cursor: grabbing;
-  }
+  //cursor: grab;
+  transition: height 0.2s ease-in-out;
 
   user-select: none;
 
