@@ -70,7 +70,6 @@ const DetailPage = ({ params }) => {
                           className={"rounded-xl"}
                           blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="}
                           placeholder={"blur"}
-                          priority
                       />
                   )}
                 </div>

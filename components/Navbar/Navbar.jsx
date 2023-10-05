@@ -56,7 +56,6 @@ export const Navbar = () => {
               alt={"vox8"}
               width={36}
               height={36}
-              priority
             />
           </Link>
           <MenuSection isMobile={isMobile} />

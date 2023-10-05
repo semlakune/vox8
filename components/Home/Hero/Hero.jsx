@@ -78,7 +78,7 @@ const Hero = ({ loading, data }) => {
         {data?.results.map((item, index) => (
           <Wrapper key={index} className={"px-3"}>
             <Card className={"hero-card"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>
-              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} placeholder={"blur"} blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} priority />
+              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} placeholder={"blur"} blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} />
               <CardContent>
                 <h1>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
               </CardContent>

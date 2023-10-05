@@ -150,7 +150,7 @@ const Scroller = ({ data, loading, error, group, setGroup, title }) => {
             {data?.results?.map((item) => (
                 <div className={"flex flex-col flex-wrap pb-14"} key={item.id}>
                   <Card onClick={() => router.push(`/detail/${group}/${item.id}`)}>
-                    <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} priority blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} placeholder={"blur"} />
+                    <Image src={item.poster} alt={item.title || "Movie Poster"} width={400} height={600} blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} placeholder={"blur"} />
                     <div className={"vote-average"}>{item.vote_average}</div>
                   </Card>
                   <div className={"max-w-[200px] whitespace-pre-wrap px-3 cursor-pointer"} onClick={() => router.push(`/detail/${group}/${item.id}`)}>

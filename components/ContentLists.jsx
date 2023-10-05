@@ -117,7 +117,6 @@ export default function ContentLists({ type, group, data, loading, error, setPag
                   alt={item.title || "Movie Poster"}
                   width={400}
                   height={600}
-                  priority
                   blurDataURL={
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="
                   }
