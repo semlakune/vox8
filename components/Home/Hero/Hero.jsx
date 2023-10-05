@@ -4,35 +4,32 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import { Skeleton } from "@/components/ui/skeleton"
+import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import styled from "styled-components";
 import Image from "next/image";
 import { ChevronRightIcon, ChevronLeftIcon } from "@radix-ui/react-icons";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function CustomNextArrow(props) {
   const { className, style, onClick } = props;
   return (
-      <ChevronRightIcon
-          className={className}
-          style={{ ...style, display: 'block', color: 'black', fontSize: '20px' }}
-          onClick={onClick}
-      />
+    <ChevronRightIcon
+      className={className}
+      style={{ ...style, display: "block", color: "black", fontSize: "20px" }}
+      onClick={onClick}
+    />
   );
 }
 
 function CustomPrevArrow(props) {
   const { className, style, onClick } = props;
   return (
-      <ChevronLeftIcon
-          className={className}
-          style={{ ...style, display: 'block', color: 'black', fontSize: '20px' }}
-          onClick={onClick}
-      />
+    <ChevronLeftIcon
+      className={className}
+      style={{ ...style, display: "block", color: "black", fontSize: "20px" }}
+      onClick={onClick}
+    />
   );
 }
 
@@ -67,24 +64,45 @@ const Hero = ({ loading, data }) => {
     dotsClass: "dots_custom",
   };
 
-  if (loading) return (
+  if (loading)
+    return (
       <div className={"flex justify-center items-center px-3"}>
         <Skeleton className="w-[100%] h-[40vh]" />
       </div>
-  )
+    );
   return (
     <SliderWrapper>
       <Slider {...settings}>
-        {data?.results.map((item, index) => (
-          <Wrapper key={index} className={"px-3"}>
-            <Card className={"hero-card"} onClick={() => router.push(`/detail/${item.group}/${item.id}`)}>
-              <Image src={item.backdrop} alt={item.title || "Movie Poster"} width={1400} height={800} placeholder={"blur"} blurDataURL={"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="} />
-              <CardContent>
-                <h1>{item.title + (item.release_date ? ` (${new Date(item.release_date).getFullYear()})` : '')}</h1>
-              </CardContent>
-            </Card>
-          </Wrapper>
-        )).slice(0, 10)}
+        {data?.results
+          .map((item, index) => (
+            <Wrapper key={index} className={"px-3"}>
+              <Card
+                className={"hero-card"}
+                onClick={() => router.push(`/detail/${item.group}/${item.id}`)}
+              >
+                <Image
+                  src={item.backdrop}
+                  alt={item.title || "Movie Poster"}
+                  width={1400}
+                  height={800}
+                  placeholder={"blur"}
+                  blurDataURL={
+                    "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="
+                  }
+                  unoptimized={true}
+                />
+                <CardContent>
+                  <h1>
+                    {item.title +
+                      (item.release_date
+                        ? ` (${new Date(item.release_date).getFullYear()})`
+                        : "")}
+                  </h1>
+                </CardContent>
+              </Card>
+            </Wrapper>
+          ))
+          .slice(0, 10)}
       </Slider>
     </SliderWrapper>
   );
@@ -92,7 +110,7 @@ const Hero = ({ loading, data }) => {
 
 const Wrapper = styled.div`
   position: relative;
-  
+
   .hero-card {
     width: 100%;
     height: 50vh;
@@ -121,9 +139,9 @@ const Wrapper = styled.div`
 
   h1 {
     position: absolute;
-    top: 50%; 
+    top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); 
+    transform: translate(-50%, -50%);
     font-size: 22px;
     font-weight: 700;
     color: #fff;
@@ -137,7 +155,6 @@ const Wrapper = styled.div`
     }
   }
 `;
-
 
 const SliderWrapper = styled.div`
   .slick-next:before,
@@ -173,7 +190,9 @@ const SliderWrapper = styled.div`
     width: 5px;
     border-radius: 100%;
     padding: 0;
-    transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.4s ease; /* Elastic effect for scale, smooth for opacity */
+    transition:
+      transform 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55),
+      opacity 0.4s ease; /* Elastic effect for scale, smooth for opacity */
     html.dark & {
       background: #696969;
     }
@@ -186,7 +205,7 @@ const SliderWrapper = styled.div`
     border-radius: 20px;
     transform: scale(1.5); /* Scale the dot up */
     opacity: 1; /* Make the dot fully visible */
-    
+
     html.dark & {
       background: #fff;
     }

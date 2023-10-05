@@ -121,6 +121,7 @@ export default function ContentLists({ type, group, data, loading, error, setPag
                     "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mOcZwsAAX8A3Uaf6mIAAAAASUVORK5CYII="
                   }
                   placeholder={"blur"}
+                  unoptimized={true}
                 />
                 <div className={"vote-average"}>{item.vote_average}</div>
               </Card>
