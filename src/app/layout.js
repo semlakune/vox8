@@ -6,7 +6,7 @@ import CustomScrollbar from "@/components/CustomScrollbar";
 import Providers from "@/app/providers";
 
 const titillium = Titillium_Web({ subsets: ["latin"], weight: ["400", "700"]});
-export const runtime = 'edge'
+
 export const metadata = {
   title: "Vox8",
   description: "Movies and TV shows database powered by TMDB",
